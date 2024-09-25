@@ -34,8 +34,15 @@ namespace DemoOnEqualsSept25
             CThing B = new CThing(5);
             CThing C = new CThing(7);
 
+            // without an implementation of Equals in our class,
+            //  we should see referential equality with .Equals
+            // with an implementation of Equals in our class,
+            //  we will see our logical equals behaviour
+            // we can *always* force referential checks with 
+            //  ReferenceEquals
             Console.WriteLine($"A equals B : {A.Equals(B)}");
             Console.WriteLine($"A equals C : {A.Equals(C)}");
+            Console.WriteLine($"A ref equals B : {ReferenceEquals(A, B)}");
         }
     }
 
@@ -48,17 +55,17 @@ namespace DemoOnEqualsSept25
             iVal = i;
         }
 
-        //public override bool Equals(object obj)
-        //{
-        //    if (!(obj is CThing other))
-        //        return false;
+        public override bool Equals(object obj)
+        {
+            if (!(obj is CThing other))
+                return false;
 
-        //    return iVal.Equals(other.iVal);
-        //}
+            return iVal.Equals(other.iVal);
+        }
 
-        //public override int GetHashCode()
-        //{
-        //    return 1;
-        //}
+        public override int GetHashCode()
+        {
+            return 1;
+        }
     }
 }
