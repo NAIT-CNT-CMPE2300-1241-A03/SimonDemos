@@ -25,8 +25,9 @@ namespace demo_oct_07_2024_comparison_lambdas
         {
             InitializeComponent();
 
-            for (int i = 0; i < 10; ++i)
-                _stuff.Add(_rnd.Next(-5, 6));
+            // altered after push (make 50, in the range of 0 to 10 inclusive)
+            for (int i = 0; i < 50; ++i)
+                _stuff.Add(_rnd.Next(0, 11));
 
             // use my custom comparison method to perform
             //  the item-to-item comparisons
@@ -40,20 +41,31 @@ namespace demo_oct_07_2024_comparison_lambdas
             //  form!            
             Comparison<int> blah = new Comparison<int>(utility.MyComp);
             _stuff.Sort(blah); // same as below
+            Console.WriteLine(string.Join(", ", _stuff));
 
             _stuff.Sort(delegate (int A, int B)
             {
                 return B.CompareTo(A);
             });
+            Console.WriteLine(string.Join(", ", _stuff));
 
             _stuff.Sort((A,B) => B.CompareTo(A));
+            Console.WriteLine(string.Join(", ", _stuff));
 
-             
             //_stuff.Sort(new Comparison<int> (MyComp));
 
+            // punt all values greater than 5::
+            
+            // option a:: filter!
+            _stuff = _stuff.Where((q) => q <= 5).ToList();
+            
+            // option b:: use a direct list method
+            Console.WriteLine ($"I removed {_stuff.RemoveAll((q) => q > 5)} elements!");
+
+            // option c::
+            _stuff = _stuff.FindAll((q) => q <= 5);
+
             Console.WriteLine(string.Join(", ", _stuff));
-            // -4, 4, 1, -5, 4, 4, 0, 0, -3, -3
-            // -5, -4, -4, -3, -1, -1, 0, 1, 3, 4
         }
     }
 }
